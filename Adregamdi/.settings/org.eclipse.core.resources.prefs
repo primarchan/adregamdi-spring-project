@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/com/adregamdi/api/VisitKoreaAPI.java=UTF-8
+encoding//src/com/adregamdi/config/ServletAppContext.java=UTF-8
+encoding//src/com/adregamdi/controller/SpotController.java=UTF-8
+encoding//src/com/adregamdi/dto/SpotDTO.java=UTF-8
+encoding//src/com/adregamdi/mapper/NoticeMapper.java=UTF-8
+encoding//src/com/adregamdi/service/ScheduleService.java=UTF-8
+encoding/<project>=UTF-8
