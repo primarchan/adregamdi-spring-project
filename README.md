@@ -23,69 +23,41 @@
 </br>
 
 ## 3. ERD 설계
-![](https://github.com/PrimarchAn/SpringProject01/blob/master/ERD.png)
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/ERD.png)
 
 
-## 4. 핵심 기능
-이 서비스의 핵심 기능은 컨텐츠 등록 기능입니다.  
-사용자는 단지 컨텐츠의 카테고리를 선택하고, URL만 입력하면 끝입니다.  
-이 단순한 기능의 흐름을 보면, 서비스가 어떻게 동작하는지 알 수 있습니다.  
+## 4. 주요 기능
+이 서비스의 주요 기능은 8가지가 있습니다.  
+사용자의 편의성과 서비스 목표에 맞게 각 기능들을 구현했습니다.
+아래 주요 기능 설명 펼치기를 누르면 각 기능 별 상세 설명을 확인할 수 있습니다. 
 
 <details>
-<summary><b>핵심 기능 설명 펼치기</b></summary>
+<summary><b>주요 기능 설명 펼치기</b></summary>
 <div markdown="1">
 
-### 4.1. 전체 흐름
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow1.png)
+### 4.1. 네이버 로그인 API 활용
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(1)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20%EB%84%A4%EC%9D%B4%EB%B2%84%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20API%20%ED%99%9C%EC%9A%A9.PNG)
 
-### 4.2. 사용자 요청
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_vue.png)
+### 4.2. PASSWORD Bcrypt 해싱
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(2)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20%20PASSWORD%20Bcrypt%20%ED%95%B4%EC%8B%B1.PNG)
 
-- **URL 정규식 체크** :pushpin: [코드 확인](https://github.com/Integerous/goQuality/blob/b587bbff4dce02e3bec4f4787151a9b6fa326319/frontend/src/components/PostInput.vue#L67)
-  - Vue.js로 렌더링된 화면단에서, 사용자가 등록을 시도한 URL의 모양새를 정규식으로 확인합니다.
-  - URL의 모양새가 아닌 경우, 에러 메세지를 띄웁니다.
+### 4.3. Tmap API 활용
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(3)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20Tmap%20API%20%ED%99%9C%EC%9A%A9.PNG)
+  
+### 4.4. 기상청 API 활용
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(4)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20%EA%B8%B0%EC%83%81%EC%B2%AD%20API%20%ED%99%9C%EC%9A%A9.PNG)
 
-- **Axios 비동기 요청** :pushpin: [코드 확인]()
-  - URL의 모양새인 경우, 컨텐츠를 등록하는 POST 요청을 비동기로 날립니다.
-
-### 4.3. Controller
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_controller.png)
-
-- **요청 처리** :pushpin: [코드 확인](https://github.com/Integerous/goQuality/blob/b2c5e60761b6308f14eebe98ccdb1949de6c4b99/src/main/java/goQuality/integerous/controller/PostRestController.java#L55)
-  - Controller에서는 요청을 화면단에서 넘어온 요청을 받고, Service 계층에 로직 처리를 위임합니다.
-
-- **결과 응답** :pushpin: [코드 확인]()
-  - Service 계층에서 넘어온 로직 처리 결과(메세지)를 화면단에 응답해줍니다.
-
-### 4.4. Service
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_service1.png)
-
-- **Http 프로토콜 추가 및 trim()** :pushpin: [코드 확인]()
-  - 사용자가 URL 입력 시 Http 프로토콜을 생략하거나 공백을 넣은 경우,  
-  올바른 URL이 될 수 있도록 Http 프로토콜을 추가해주고, 공백을 제거해줍니다.
-
-- **URL 접속 확인** :pushpin: [코드 확인]()
-  - 화면단에서 모양새만 확인한 URL이 실제 리소스로 연결되는지 HttpUrlConnection으로 테스트합니다.
-  - 이 때, 빠른 응답을 위해 Request Method를 GET이 아닌 HEAD를 사용했습니다.
-  - (HEAD 메소드는 GET 메소드의 응답 결과의 Body는 가져오지 않고, Header만 확인하기 때문에 GET 메소드에 비해 응답속도가 빠릅니다.)
-
-  ![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_service2.png)
-
-- **Jsoup 이미지, 제목 파싱** :pushpin: [코드 확인]()
-  - URL 접속 확인결과 유효하면 Jsoup을 사용해서 입력된 URL의 이미지와 제목을 파싱합니다.
-  - 이미지는 Open Graphic Tag를 우선적으로 파싱하고, 없을 경우 첫 번째 이미지와 제목을 파싱합니다.
-  - 컨텐츠에 이미지가 없을 경우, 미리 설정해둔 기본 이미지를 사용하고, 제목이 없을 경우 생략합니다.
-
-
-### 4.5. Repository
-
-![](https://zuminternet.github.io/images/portal/post/2019-04-22-ZUM-Pilot-integer/flow_repo.png)
-
-- **컨텐츠 저장** :pushpin: [코드 확인]()
-  - URL 유효성 체크와 이미지, 제목 파싱이 끝난 컨텐츠는 DB에 저장합니다.
-  - 저장된 컨텐츠는 다시 Repository - Service - Controller를 거쳐 화면단에 송출됩니다.
+### 4.5. Ajax 비동기식 채팅 기능
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(5)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20Ajax%20%EB%B9%84%EB%8F%99%EA%B8%B0%EC%8B%9D%20%EC%B1%84%ED%8C%85%20%EA%B8%B0%EB%8A%A5.PNG)
+  
+### 4.6. CK Editor 활용
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(6)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20CK%20Editor%20%ED%99%9C%EC%9A%A9.PNG)
+  
+### 4.7. 관리자 권한 부여
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(7)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20%EA%B4%80%EB%A6%AC%EC%9E%90%20%EA%B6%8C%ED%95%9C%20%EB%B6%80%EC%97%AC.PNG)
+  
+### 4.8. 조회수, 이전/다음글 기능
+![](https://github.com/PrimarchAn/SpringProject01/blob/master/images/(8)%EC%A3%BC%EC%9A%94%20%EA%B5%AC%ED%98%84%20%EA%B8%B0%EB%8A%A5%20-%20%EC%A1%B0%ED%9A%8C%EC%88%98%20%EB%B0%8F%20%EC%9D%B4%EC%A0%84%EB%8B%A4%EC%9D%8C%EA%B8%80%20%EA%B8%B0%EB%8A%A5.PNG)
 
 </div>
 </details>
